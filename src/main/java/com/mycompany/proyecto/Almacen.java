@@ -5,6 +5,9 @@
  */
 package com.mycompany.proyecto;
 
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,44 +18,29 @@ import java.util.Map;
  * @author genec
  */
 public class Almacen {
+        //variables de lectura de archivo
+        static BufferedReader lector;
+        static String linea;
+        public static ArrayList lista = new ArrayList<String>();
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
-        Map<String, String>  Etiquetas = new HashMap<String, String>();
-        Map<String, Integer> Ocurrencias = new HashMap<String, Integer>();
-        List<String> ejemploLista = new ArrayList();
-        List<String> ejemploLista2 = new ArrayList();
-        String[] Frases;
-        String[] Palabras;
-        String Probando = "Hola como estas|Español";
-        String Prueba = "Bye my friends estas|Ingles";
-        ejemploLista.add(Prueba);
-        ejemploLista.add(Probando);
-        for(String str : ejemploLista)
-        {
-            Frases = str.split("\\|");
-            String Tag = Frases[1];
-            String Frase = Frases[0];
-            ejemploLista2.add(Frase);
-            Etiquetas.put(Tag, Frase);
-        }
-        for ( String Palabra : ejemploLista2 )
-            {
-                Palabras = Palabra.split(" ");
-                System.out.println(Palabras.toString());
-                for (int i = 0; i < Palabras.length; i++) {
-                    Integer oldCount = Ocurrencias.get(Palabras[i]);
-                    if(oldCount == null)
-                    {
-                        oldCount = 0;
-                    }
-                    Ocurrencias.put(Palabras[i], oldCount + 1);
-                }
+        
+        //leer archivo
+        leer("rutaArchivo");
+
+    }
+
+    //método para laer archivo
+    public static void leer(String nombreArchivo){
+        try{
+            lector = new BufferedReader(new FileReader(nombreArchivo));
+            while((linea=lector.readLine()) != null){
+                lista.add(linea);
             }
-                System.out.println(Ocurrencias);
+            lector.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,e);
+        }
     }
     
 }
