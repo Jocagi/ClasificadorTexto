@@ -63,6 +63,8 @@ public class Almacen {
                         oldCount = 0;
                     }
                     Etiquetas.get(Tag).put(Palabras[i], oldCount +1);
+                    //Elimino espacios vacíos
+                    Etiquetas.get(Tag).remove("");
                 }
             }
             //Creo el diccionario si en caso la etiqueta "Llave" aún no existe
@@ -85,10 +87,12 @@ public class Almacen {
                         oldCount = 0;
                     }
                     Etiquetas.get(Tag).put(Palabras[i], oldCount +1);
+                    //Elimino espacios vacíos
+                    Etiquetas.get(Tag).remove("");
                 }
             }
         }
-                System.out.println(Etiquetas);
+        System.out.println(Etiquetas);
     }
     //Metodo de Kevin de lectura de archivo
     public static void leer(String nombreArchivo){
