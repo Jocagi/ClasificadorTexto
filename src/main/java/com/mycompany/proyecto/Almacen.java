@@ -29,7 +29,9 @@ public class Almacen {
         String[] Palabras;
         String Probando = "Hola como estas|Español";
         String Prueba = "Bye my friends estas|Ingles";
+        String Prueba2 = "Bye my friends estas|Ingles";
         ejemploLista.add(Prueba);
+        ejemploLista.add(Prueba2);
         ejemploLista.add(Probando);
         for(String str : ejemploLista)
         {
