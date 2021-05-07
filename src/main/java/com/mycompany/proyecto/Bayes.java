@@ -22,7 +22,8 @@ public class Bayes {
 
     private String fraseNormalizada(String input)
     {
-        input = input.replaceAll("[^a-zA-Z]", " ");
+        input = input.replaceAll("\\p{Punct}", " ");
+        input = input.replaceAll("\\pP|\\pS|\\pC|\\pN|\\pZ", " ");
         input = input.toUpperCase();
         return input;
     }
