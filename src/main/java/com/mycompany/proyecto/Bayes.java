@@ -92,15 +92,52 @@ public class Bayes {
     }
 
     private void CalcularProbabilidadPorEtiqueta(){
-        //Recorre el diccionario por etiquetas
+        int mensajes = 0;
+        //Recorre el diccionario de mensajes por etiqueta para contar total de mensajes
         for (var value : TotalL.entrySet()){
-            double operacion = value.getValue() / totalPalabras;
+            mensajes += value.getValue();
+        }
+        //Calculo individual de proabilidad por etiqueta
+        for (var value : TotalL.entrySet()){
+            double operacion = (double) value.getValue() / (double) mensajes;
             ProbabilityTag.put(value.getKey(), operacion);
         }
     }
 
     public String Inferir(String texto){
         String[] palabras = texto.split(" ");
-        return "";
+        double result = 0;
+        Map<String, Double> ProbabilityTagBayes = new HashMap<String, Double>();
+        double mayor = Double.NEGATIVE_INFINITY;
+        String etiquetaMayor = "";
+
+        //Hacer calculo de probabilidad
+        for (var etiqueta: Etiquetas.entrySet()) {
+
+            double puntaje = 0;
+
+            String nombreEtiqueta = etiqueta.getKey();
+
+            for (var palabra: palabras) {
+                if (ProbabilityWord.containsKey(nombreEtiqueta) && ProbabilityWord.get(nombreEtiqueta).containsKey(palabra))
+                {
+                    puntaje += Math.log(ProbabilityWord.get(nombreEtiqueta).get(palabra));
+                }
+                else {
+                    puntaje += Math.log(0.00000000000001);
+                }
+            }
+            puntaje += Math.log(ProbabilityTag.get(etiqueta.getKey()));
+            ProbabilityTagBayes.put(etiqueta.getKey(), puntaje);
+
+            //Elegir el mayor
+            if (puntaje > mayor)
+            {
+                mayor = puntaje;
+                etiquetaMayor = etiqueta.getKey();
+            }
+        }
+
+        return etiquetaMayor;
     }
 }

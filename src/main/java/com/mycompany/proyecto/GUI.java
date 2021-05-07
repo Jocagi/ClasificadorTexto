@@ -40,6 +40,7 @@ public class GUI extends Frame{
     public TextField tfCount;
     public JFileChooser chooser;
     File file = null;
+    public static String pathToFile;
 
     public GUI()
     {
@@ -96,8 +97,11 @@ public class GUI extends Frame{
         if(returnVal == JFileChooser.APPROVE_OPTION) {
            tfInput.setText(chooser.getSelectedFile().getAbsolutePath());
            path = chooser.getSelectedFile().getAbsolutePath();
+
+           ///////////////CORREGIR
+           GUI.pathToFile = path;
+            ///////////
         }
-        Bayes modelo = new Bayes(Parser.obtenerDatos(path));
       }
    }
     private class BtnEvaluar implements ActionListener {
@@ -106,7 +110,11 @@ public class GUI extends Frame{
       public void actionPerformed(ActionEvent evt) {
          String palabra = tfWord.getText();
          //AQUÍ PONER LLAMADA A TU MÉTODO
-         String IDIOMA = "";//IDIOMA RESULTADO
+
+          ///////////////CORREGIR
+          Bayes modelo = new Bayes(Parser.obtenerDatos(GUI.pathToFile));
+
+         String IDIOMA = modelo.Inferir(palabra);;//IDIOMA RESULTADO
          tfCount.setText(IDIOMA); // Convert int to String
       }
    }
