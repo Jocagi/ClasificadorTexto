@@ -99,6 +99,7 @@ public class Almacen extends Frame{
         Map<String, Map<String, Integer>>  Etiquetas = new HashMap<String, Map<String, Integer>>();
         Map<String, Integer>  TotalL = new HashMap<String,Integer>();
         Map<String, Double> ProbabilityW = new HashMap<String, Double>();
+        Map<String, Map<String, Double>> ProbabilityT = new HashMap<String, Map<String, Double>>();
         //Vectores para separación
         String[] Frases;
         String[] Palabras;
@@ -171,9 +172,11 @@ public class Almacen extends Frame{
                 counterT += ValW.getValue();
             }
             for(Map.Entry<String, Integer> result : KeyL.getValue().entrySet()){
-                ProbabilityW.put(result.getKey(), (double) result.getValue() / (double) counterT);
+                ProbabilityW.put(result.getKey(),(double) result.getValue() / (double) counterT);
+                ProbabilityT.put(KeyL.getKey(), ProbabilityW);
             }
         }
+
     }
     //Metodo de Kevin de lectura de archivo
     public static void leer(String nombreArchivo){
