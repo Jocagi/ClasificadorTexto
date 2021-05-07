@@ -8,14 +8,16 @@ public class Bayes {
 
     private Map<String, Map<String, Integer>>  Etiquetas = new HashMap<String, Map<String, Integer>>();
     private Map<String, Integer>  TotalL = new HashMap<String,Integer>();
-    private Map<String, Double> ProbabilityW = new HashMap<String, Double>();
-    private Map<String, Map<String, Double>> ProbabilityT = new HashMap<String, Map<String, Double>>();
+    private Map<String, Map<String, Double>> ProbabilityWord = new HashMap<String, Map<String, Double>>();
+    private Map<String, Double> ProbabilityTag = new HashMap<String, Double>();
     private ArrayList<String> Entrenamiento;
+    private int totalPalabras = 0;
 
     public Bayes(ArrayList<String> Entrenamiento){
         this.Entrenamiento = Entrenamiento;
         Conteo();
-        CalcularProbabilidad();
+        CalcularProbabilidadPorPalabra();
+        CalcularProbabilidadPorEtiqueta();
     }
 
     private void Conteo(){
@@ -69,21 +71,36 @@ public class Bayes {
         }
     }
 
-    private void CalcularProbabilidad(){
+    private void CalcularProbabilidadPorPalabra(){
         //Recorre el diccionario por etiquetas
         for (Map.Entry<String, Map<String, Integer>> KeyL : Etiquetas.entrySet()){
             int counterT = 0;
+            Map<String, Double> ProbabilityW = new HashMap<String, Double>();
             //Recorre el diccionario de la etiqueta para saber la cantidad de palabras
             for(Map.Entry<String, Integer> ValW : KeyL.getValue().entrySet() ){
                 counterT += ValW.getValue();
             }
             //Se recorre otra vez el diccionaro para poder saber la probabilidad de cada palabra en cada etiqueta
             for(Map.Entry<String, Integer> result : KeyL.getValue().entrySet()){
-                ProbabilityW.put(result.getKey(),(double) result.getValue() / (double) counterT);
                 //se guarda en un diccionario conforme a su etiqueta, palabra y probabilidad
-                ProbabilityT.put(KeyL.getKey(), ProbabilityW);
+                double operation = (double) result.getValue() / (double) counterT;
+                ProbabilityW.put(result.getKey(), operation);
+                ProbabilityWord.put(KeyL.getKey(), ProbabilityW);
             }
+            totalPalabras += counterT;
         }
     }
 
+    private void CalcularProbabilidadPorEtiqueta(){
+        //Recorre el diccionario por etiquetas
+        for (var value : TotalL.entrySet()){
+            double operacion = value.getValue() / totalPalabras;
+            ProbabilityTag.put(value.getKey(), operacion);
+        }
+    }
+
+    public String Inferir(String texto){
+        String[] palabras = texto.split(" ");
+        return "";
+    }
 }
