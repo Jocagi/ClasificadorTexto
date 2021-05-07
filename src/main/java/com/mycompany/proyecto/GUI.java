@@ -107,13 +107,14 @@ public class GUI extends Frame{
       @Override
       public void actionPerformed(ActionEvent evt) {
          String palabra = tfWord.getText();
-         //AQUÍ PONER LLAMADA A TU MÉTODO
-
-          ///////////////CORREGIR
-         
-
-         String IDIOMA = modelo.Inferir(palabra);;//IDIOMA RESULTADO
-         tfCount.setText(IDIOMA); // Convert int to String
+          if (modelo ==  null) {
+              JOptionPane.showMessageDialog(null, "No existen datos para el análisis");
+          }
+          else
+          {
+            String IDIOMA = modelo.Inferir(palabra);//IDIOMA RESULTADO
+            tfCount.setText(IDIOMA); 
+          }
       }
    }
     private class BtnVerMas implements ActionListener 
