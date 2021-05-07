@@ -20,6 +20,13 @@ public class Bayes {
         CalcularProbabilidadPorEtiqueta();
     }
 
+    private String fraseNormalizada(String input)
+    {
+        input = input.replaceAll("[^a-zA-Z]", " ");
+        input = input.toUpperCase();
+        return input;
+    }
+
     private void Conteo(){
         //Aquí se manda a leer el archivo
         //Creacion diccionario de etiquetas
@@ -35,15 +42,7 @@ public class Bayes {
             String Frase = Frases[0];
 
             //Eliminación caracteres especiales
-            Frase = Frase.replace('.', ' ');
-            Frase = Frase.replace('?', ' ');
-            Frase = Frase.replace('¿', ' ');
-            Frase = Frase.replace('!', ' ');
-            Frase = Frase.replace('¡', ' ');
-            Frase = Frase.replace('(', ' ');
-            Frase = Frase.replace(')', ' ');
-            Frase = Frase.replace(',', ' ');
-            Frase = Frase.replace('"', ' ');
+            Frase = fraseNormalizada(Frase);
             Palabras = Frase.split(" ");
 
             if(this.Etiquetas.containsKey(Tag)){
@@ -105,6 +104,7 @@ public class Bayes {
     }
 
     public String Inferir(String texto){
+        texto = fraseNormalizada(texto);
         String[] palabras = texto.split(" ");
         double result = 0;
         Map<String, Double> ProbabilityTagBayes = new HashMap<String, Double>();
