@@ -30,9 +30,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
- * @author genec
+ * @author karen
  */
-public class Almacen extends Frame{
+public class GUI extends Frame{
     
     private Button b1, b2, b3;
     public Label lblInput, lblWord, lblWord1, lblWord2;
@@ -40,9 +40,9 @@ public class Almacen extends Frame{
     public TextField tfCount;
     public JFileChooser chooser;
     File file = null;
-    
-    public Almacen()
-    {        
+
+    public GUI()
+    {
         super ("Clasificador de texto");
         setLayout(new FlowLayout());
         lblWord1 = new Label("                Idioma:");
@@ -92,7 +92,7 @@ public class Almacen extends Frame{
         chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("csv","csv");
         chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(Almacen.this);
+        int returnVal = chooser.showOpenDialog(GUI.this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
            tfInput.setText(chooser.getSelectedFile().getAbsolutePath());
            path = chooser.getSelectedFile().getAbsolutePath();
