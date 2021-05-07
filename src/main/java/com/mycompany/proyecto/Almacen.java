@@ -5,6 +5,7 @@
  */
 package com.mycompany.proyecto;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.Scanner;
  * @author genec
  */
 public class Almacen {
+
     static BufferedReader lector;
         static String linea;
         public static ArrayList<String> lista = new ArrayList();
