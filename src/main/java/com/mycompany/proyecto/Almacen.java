@@ -110,60 +110,41 @@ public class Almacen extends Frame{
             Frases = str.split("\\|");
             String Tag = Frases[1];
             String Frase = Frases[0];
+
             //Eliminación caracteres especiales
+            Frase = Frase.replace('.', ' ');
+            Frase = Frase.replace('?', ' ');
+            Frase = Frase.replace('¿', ' ');
+            Frase = Frase.replace('!', ' ');
+            Frase = Frase.replace('¡', ' ');
+            Frase = Frase.replace('(', ' ');
+            Frase = Frase.replace(')', ' ');
+            Frase = Frase.replace(',', ' ');
+            Frase = Frase.replace('"', ' ');
+            Palabras = Frase.split(" ");
+
             if(Etiquetas.containsKey(Tag)){
                 TotalL.put(Tag, TotalL.get(Tag) + 1);
-                Frase = Frase.replace('.', ' ');
-                Frase = Frase.replace('?', ' ');
-                Frase = Frase.replace('¿', ' ');
-                Frase = Frase.replace('!', ' ');
-                Frase = Frase.replace('¡', ' ');
-                Frase = Frase.replace('(', ' ');
-                Frase = Frase.replace(')', ' ');
-                Frase = Frase.replace(',', ' ');
-                Frase = Frase.replace('"', ' ');
-                Palabras = Frase.split(" ");
-                //Aquí cuento la cantidad de palabras por etiqueta
-                //Y las almaceno según el idioma si ya existe la etiqueta
-                for (int i = 0; i < Palabras.length; i++) {
-                    Integer oldCount = Etiquetas.get(Tag).get(Palabras[i]);
-                    if(oldCount == null)
-                    {
-                        oldCount = 0;
-                    }
-                    Etiquetas.get(Tag).put(Palabras[i], oldCount +1);
-                    //Elimino espacios vacíos
-                    Etiquetas.get(Tag).remove("");
-                }
             }
             //Creo el diccionario si en caso la etiqueta "Llave" aún no existe
             else{
                 Etiquetas.put(Tag, new HashMap<String, Integer>());
                 TotalL.put(Tag,cantidadT++);
                 cantidadT = 1;
-                Frase = Frase.replace('.', ' ');
-                Frase = Frase.replace('?', ' ');
-                Frase = Frase.replace('¿', ' ');
-                Frase = Frase.replace('!', ' ');
-                Frase = Frase.replace('¡', ' ');
-                Frase = Frase.replace('(', ' ');
-                Frase = Frase.replace(')', ' ');
-                Frase = Frase.replace(',', ' ');
-                Frase = Frase.replace('"', ' ');
-                Palabras = Frase.split(" ");
-
-                for (int i = 0; i < Palabras.length; i++) {
-                    Integer oldCount = Etiquetas.get(Tag).get(Palabras[i]);
-                    if(oldCount == null)
-                    {
-                        oldCount = 0;
-                    }
-                    Etiquetas.get(Tag).put(Palabras[i], oldCount +1);
-                    //Elimino espacios vacíos
-                    Etiquetas.get(Tag).remove("");
-                }
             }
 
+            //Aquí cuento la cantidad de palabras por etiqueta
+            //Y las almaceno según el idioma si ya existe la etiqueta
+            for (int i = 0; i < Palabras.length; i++) {
+                Integer oldCount = Etiquetas.get(Tag).get(Palabras[i]);
+                if(oldCount == null)
+                {
+                    oldCount = 0;
+                }
+                Etiquetas.get(Tag).put(Palabras[i], oldCount +1);
+                //Elimino espacios vacíos
+                Etiquetas.get(Tag).remove("");
+            }
         }
 
         for (Map.Entry<String, Map<String, Integer>> KeyL : Etiquetas.entrySet()){
