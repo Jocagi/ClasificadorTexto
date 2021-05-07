@@ -100,6 +100,7 @@ public class Almacen extends Frame{
         Map<String, Map<String, Integer>>  Etiquetas = new HashMap<String, Map<String, Integer>>();
         Map<String, Integer>  TotalL = new HashMap<String,Integer>();
         Map<String, Double> ProbabilityW = new HashMap<String, Double>();
+        Map<String, Map<String, Double>> ProbabilityT = new HashMap<String, Map<String, Double>>();
         //Vectores para separación
         String[] Frases;
         String[] Palabras;
@@ -147,15 +148,21 @@ public class Almacen extends Frame{
             }
         }
 
+        //Recorre el diccionario por etiquetas
         for (Map.Entry<String, Map<String, Integer>> KeyL : Etiquetas.entrySet()){
             int counterT = 0;
+            //Recorre el diccionario de la etiqueta para saber la cantidad de palabras
             for(Map.Entry<String, Integer> ValW : KeyL.getValue().entrySet() ){
                 counterT += ValW.getValue();
             }
+            //Se recorre otra vez el diccionaro para poder saber la probabilidad de cada palabra en cada etiqueta
             for(Map.Entry<String, Integer> result : KeyL.getValue().entrySet()){
-                ProbabilityW.put(result.getKey(), (double) result.getValue() / (double) counterT);
+                ProbabilityW.put(result.getKey(),(double) result.getValue() / (double) counterT);
+                //se guarda en un diccionario conforme a su etiqueta, palabra y probabilidad
+                ProbabilityT.put(KeyL.getKey(), ProbabilityW);
             }
         }
+
     }
     //Metodo de Kevin de lectura de archivo
     public static void leer(String nombreArchivo){
