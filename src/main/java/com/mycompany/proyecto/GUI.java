@@ -41,7 +41,7 @@ public class GUI extends Frame{
     public JFileChooser chooser;
     File file = null;
     public static String pathToFile;
-
+    public Bayes modelo;
     public GUI()
     {
         super ("Clasificador de texto");
@@ -97,10 +97,8 @@ public class GUI extends Frame{
         if(returnVal == JFileChooser.APPROVE_OPTION) {
            tfInput.setText(chooser.getSelectedFile().getAbsolutePath());
            path = chooser.getSelectedFile().getAbsolutePath();
-
-           ///////////////CORREGIR
            GUI.pathToFile = path;
-            ///////////
+           modelo = new Bayes(Parser.obtenerDatos(path));
         }
       }
    }
@@ -112,7 +110,7 @@ public class GUI extends Frame{
          //AQUÍ PONER LLAMADA A TU MÉTODO
 
           ///////////////CORREGIR
-          Bayes modelo = new Bayes(Parser.obtenerDatos(GUI.pathToFile));
+         
 
          String IDIOMA = modelo.Inferir(palabra);;//IDIOMA RESULTADO
          tfCount.setText(IDIOMA); // Convert int to String
