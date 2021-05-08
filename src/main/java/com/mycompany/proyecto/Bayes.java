@@ -87,32 +87,22 @@ public class Bayes {
     private void CalcularProbabilidadPorPalabra(){
         //Recorre el diccionario por etiquetas
         for (Map.Entry<String, Map<String, Integer>> KeyL : Etiquetas.entrySet()){
-            int counterT = 0;
             Map<String, Double> ProbabilityW = new HashMap<String, Double>();
-            //Recorre el diccionario de la etiqueta para saber la cantidad de palabras
-            for(Map.Entry<String, Integer> ValW : KeyL.getValue().entrySet() ){
-                counterT += ValW.getValue();
-            }
+            String etiqueta = KeyL.getKey();
             //Se recorre otra vez el diccionaro para poder saber la probabilidad de cada palabra en cada etiqueta
-            for(Map.Entry<String, Integer> result : KeyL.getValue().entrySet()){
+            for(var result : KeyL.getValue().entrySet()){
                 //se guarda en un diccionario conforme a su etiqueta, palabra y probabilidad
-                double operation = (double) result.getValue() / (double) counterT;
+                double operation = (double) result.getValue() / (double) PalabrasEnEtiqueta.get(etiqueta);
                 ProbabilityW.put(result.getKey(), operation);
-                ProbabilityWord.put(KeyL.getKey(), ProbabilityW);
+                ProbabilityWord.put(etiqueta, ProbabilityW);
             }
-            totalPalabras += counterT;
         }
     }
 
     private void CalcularProbabilidadPorEtiqueta(){
-        int mensajes = 0;
-        //Recorre el diccionario de mensajes por etiqueta para contar total de mensajes
-        for (var value : TotalL.entrySet()){
-            mensajes += value.getValue();
-        }
         //Calculo individual de probabilidad por etiqueta
         for (var value : TotalL.entrySet()){
-            double operacion = (double) value.getValue() / (double) mensajes;
+            double operacion = (double) value.getValue() / (double) totalMensajes;
             ProbabilityTag.put(value.getKey(), operacion);
         }
     }
@@ -139,7 +129,7 @@ public class Bayes {
                     puntaje += Math.log(ProbabilityWord.get(nombreEtiqueta).get(palabra));
                 }
                 else {
-                    puntaje += Math.log(0.0000000000000001);
+                    puntaje += Math.log(1/totalPalabras);
                 }
             }
             puntaje += Math.log(ProbabilityTag.get(etiqueta.getKey()));
