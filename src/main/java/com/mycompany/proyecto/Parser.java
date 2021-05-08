@@ -12,11 +12,22 @@ public class Parser {
         BufferedReader lector;
         String linea;
         ArrayList<String> lista = new ArrayList();
-
         try{
             lector = new BufferedReader(new FileReader(nombreArchivo));
             while((linea=lector.readLine()) != null){
-                lista.add(linea);
+                if (linea.contains("|")) {
+                  String[] parts = linea.split("\\|");
+                    if (parts.length == 2) {
+                        if (parts[0]!= "") {
+                            String lastCharacter = linea.substring(linea.length() - 1);
+                            char[] lastChar = lastCharacter.toCharArray();
+                            if(lastChar[0] != '|')
+                            {
+                                lista.add(linea);
+                            } 
+                        }
+                    }                    
+                }
             }
             JOptionPane.showMessageDialog(null, "Leído con éxito");
             lector.close();
@@ -24,7 +35,6 @@ public class Parser {
         {
             JOptionPane.showMessageDialog(null,e);
         }
-
         return lista;
     }
 }
