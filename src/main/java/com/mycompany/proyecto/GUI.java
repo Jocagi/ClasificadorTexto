@@ -42,6 +42,8 @@ public class GUI extends Frame{
     File file = null;
     public static String pathToFile;
     public Bayes modelo;
+    public String mensajeExtra = "NO SE HA HECHO NINGUNA OPERACiÓN";
+
     public GUI()
     {
         super ("Clasificador de texto");
@@ -112,8 +114,10 @@ public class GUI extends Frame{
           }
           else
           {
-            String IDIOMA = modelo.Inferir(palabra);//IDIOMA RESULTADO
-            tfCount.setText(IDIOMA); 
+                Predicción IDIOMA = modelo.Inferir(palabra);//IDIOMA RESULTADO
+                String resultado = IDIOMA.resultado;
+                mensajeExtra = IDIOMA.otros;
+                tfCount.setText(resultado);
           }
       }
    }
@@ -122,7 +126,7 @@ public class GUI extends Frame{
       // ActionEvent handler - Called back upon button-click.
       @Override
       public void actionPerformed(ActionEvent evt) {         
-         JOptionPane.showMessageDialog(null, "AQUI TODO EL TEXTO QUE QUIERAS");
+         JOptionPane.showMessageDialog(null, mensajeExtra);
       }
    }
 }

@@ -1,5 +1,6 @@
 package com.mycompany.proyecto;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class Bayes {
         Conteo();
         CalcularProbabilidadPorPalabra();
         CalcularProbabilidadPorEtiqueta();
+        JOptionPane.showMessageDialog(null, "Archivo leído con éxito");
     }
 
     private String fraseEstandarizada(String input)
@@ -107,13 +109,14 @@ public class Bayes {
         }
     }
 
-    public String Inferir(String texto){
+    public Predicción Inferir(String texto){
         texto = fraseEstandarizada(texto);
         String[] palabras = texto.split(" ");
         Map<String, Double> ProbabilityTagBayes = new HashMap<String, Double>();
 
         double mayor = Double.NEGATIVE_INFINITY;
-        String etiquetaMayor = "";
+        String etiquetaMayor = Etiquetas.keySet().toArray()[0].toString();
+        String valores = "";
 
         //Hacer calculo de probabilidad
         for (var etiqueta: Etiquetas.entrySet()) {
@@ -129,7 +132,7 @@ public class Bayes {
                     puntaje += Math.log(ProbabilityWord.get(nombreEtiqueta).get(palabra));
                 }
                 else {
-                    puntaje += Math.log(1/totalPalabras);
+                    puntaje += Math.log(0.000000000000000001);
                 }
             }
             puntaje += Math.log(ProbabilityTag.get(etiqueta.getKey()));
@@ -141,8 +144,11 @@ public class Bayes {
                 mayor = puntaje;
                 etiquetaMayor = etiqueta.getKey();
             }
+
+            //Documentar otros valores
+            valores += "\n" + nombreEtiqueta + " -> " + puntaje;
         }
 
-        return etiquetaMayor;
+        return new Predicción(etiquetaMayor, valores);
     }
 }

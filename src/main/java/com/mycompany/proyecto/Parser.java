@@ -29,7 +29,6 @@ public class Parser {
                     }                    
                 }
             }
-            JOptionPane.showMessageDialog(null, "Leído con éxito");
             lector.close();
         }catch(Exception e)
         {
