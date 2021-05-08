@@ -18,6 +18,7 @@ public class Parser {
                 if (linea.contains("|")) {
                   String[] parts = linea.split("\\|");
                     if (parts.length == 2) {
+                            parts[1] = parts[1].trim();
                         if (parts[0]!= "") {
                             String lastCharacter = linea.substring(linea.length() - 1);
                             char[] lastChar = lastCharacter.toCharArray();
