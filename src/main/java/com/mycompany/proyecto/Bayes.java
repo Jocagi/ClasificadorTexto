@@ -8,10 +8,13 @@ public class Bayes {
 
     private Map<String, Map<String, Integer>>  Etiquetas = new HashMap<String, Map<String, Integer>>();
     private Map<String, Integer>  TotalL = new HashMap<String,Integer>();
+    private Map<String, Integer>  PalabrasEnEtiqueta = new HashMap<String,Integer>();
     private Map<String, Map<String, Double>> ProbabilityWord = new HashMap<String, Map<String, Double>>();
     private Map<String, Double> ProbabilityTag = new HashMap<String, Double>();
     private ArrayList<String> Entrenamiento;
+    private int totalMensajes = 0;
     private int totalPalabras = 0;
+    private int totalEtiquetas = 0;
 
     public Bayes(ArrayList<String> Entrenamiento){
         this.Entrenamiento = Entrenamiento;
@@ -20,7 +23,7 @@ public class Bayes {
         CalcularProbabilidadPorEtiqueta();
     }
 
-    private String fraseNormalizada(String input)
+    private String fraseEstandarizada(String input)
     {
         input = input.replaceAll("\\p{Punct}", " ");
         input = input.replaceAll("\\pP|\\pS|\\pC|\\pN|\\pZ", " ");
@@ -38,12 +41,16 @@ public class Bayes {
         //For each para la lista que contiene linea por linea del csv
         for(String str : Entrenamiento)
         {
+            totalMensajes++;
             Frases = str.split("\\|");
-            String Tag = Frases[1];
+            String Tag = Frases[Frases.length - 1];
             String Frase = Frases[0];
 
             //Eliminación caracteres especiales
-            Frase = fraseNormalizada(Frase);
+            Frase = fraseEstandarizada(Frase);
+            //Eliminación de espacios vacíos
+            Frase = Frase.replaceAll("^ +| +$|( )+", "$1");
+            //Obtener palabras en frase
             Palabras = Frase.split(" ");
 
             if(this.Etiquetas.containsKey(Tag)){
@@ -52,13 +59,19 @@ public class Bayes {
             //Creo el diccionario si en caso la etiqueta "Llave" aún no existe
             else{
                 Etiquetas.put(Tag, new HashMap<String, Integer>());
+                PalabrasEnEtiqueta.put(Tag, 0);
                 TotalL.put(Tag,cantidadT++);
                 cantidadT = 1;
+                totalEtiquetas++;
             }
+
+            //Sumar total de palabras en etiqueta al diccionario
+            PalabrasEnEtiqueta.put(Tag, PalabrasEnEtiqueta.get(Tag) + Palabras.length);
 
             //Aquí cuento la cantidad de palabras por etiqueta
             //Y las almaceno según el idioma si ya existe la etiqueta
             for (int i = 0; i < Palabras.length; i++) {
+                totalPalabras++;
                 Integer oldCount = Etiquetas.get(Tag).get(Palabras[i]);
                 if(oldCount == null)
                 {
@@ -97,7 +110,7 @@ public class Bayes {
         for (var value : TotalL.entrySet()){
             mensajes += value.getValue();
         }
-        //Calculo individual de proabilidad por etiqueta
+        //Calculo individual de probabilidad por etiqueta
         for (var value : TotalL.entrySet()){
             double operacion = (double) value.getValue() / (double) mensajes;
             ProbabilityTag.put(value.getKey(), operacion);
@@ -105,10 +118,10 @@ public class Bayes {
     }
 
     public String Inferir(String texto){
-        texto = fraseNormalizada(texto);
+        texto = fraseEstandarizada(texto);
         String[] palabras = texto.split(" ");
-        double result = 0;
         Map<String, Double> ProbabilityTagBayes = new HashMap<String, Double>();
+
         double mayor = Double.NEGATIVE_INFINITY;
         String etiquetaMayor = "";
 
@@ -116,16 +129,17 @@ public class Bayes {
         for (var etiqueta: Etiquetas.entrySet()) {
 
             double puntaje = 0;
-
             String nombreEtiqueta = etiqueta.getKey();
 
+            //Efectuar operacion P(E) * P(W1|E) * P(W2|E) ... * P(Wn|E)
             for (var palabra: palabras) {
                 if (ProbabilityWord.containsKey(nombreEtiqueta) && ProbabilityWord.get(nombreEtiqueta).containsKey(palabra))
                 {
+                    //Aplica logaritmo natural para prevenir un underflow
                     puntaje += Math.log(ProbabilityWord.get(nombreEtiqueta).get(palabra));
                 }
                 else {
-                    puntaje += Math.log(0.00000000000001);
+                    puntaje += Math.log(0.0000000000000001);
                 }
             }
             puntaje += Math.log(ProbabilityTag.get(etiqueta.getKey()));
